@@ -1,6 +1,14 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: %i[ show edit update destroy ]
 
+  rescue_from Pundit::NotAuthorizedError do
+    respond_to do |format|
+      format.html { redirect_to @product, notice: "Available for admin only." }
+      format.json { render json: {}, status: :unprocessable_entity }
+    end
+  end
+
+
   # GET /products or /products.json
   def index
     @products = Product.all
@@ -13,16 +21,18 @@ class ProductsController < ApplicationController
   # GET /products/new
   def new
     @product = Product.new
+    authorize @product
   end
 
   # GET /products/1/edit
   def edit
+    authorize @product
   end
 
   # POST /products or /products.json
   def create
     @product = Product.new(product_params)
-
+    authorize @product
     respond_to do |format|
       if @product.save
         format.html { redirect_to product_url(@product), notice: "Product was successfully created." }
@@ -49,6 +59,7 @@ class ProductsController < ApplicationController
 
   # DELETE /products/1 or /products/1.json
   def destroy
+    authorize @product
     @product.destroy
 
     respond_to do |format|

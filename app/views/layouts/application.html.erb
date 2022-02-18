@@ -6,11 +6,12 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
+  
     <% if user_signed_in? %>
       <%= link_to "go out", destroy_user_session_path, method: :delete %>
     <% end %>
@@ -18,3 +19,5 @@
     <%= yield %>
   </body>
 </html>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
